@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
@@ -6,9 +7,11 @@ using System.Runtime.CompilerServices;
 
 namespace CB.Model.Common
 {
+    [Serializable]
     public abstract class ObservableObject: INotifyPropertyChanged
     {
         #region Events
+        [field:NonSerialized]
         public event PropertyChangedEventHandler PropertyChanged;
         #endregion
 
@@ -30,6 +33,11 @@ namespace CB.Model.Common
             InvokePropertyChanged(propertyName);
         }
 
+        protected virtual void NotifyChanged([CallerMemberName] string propertyName = "")
+        {
+            NotifyPropertyChanged(propertyName);
+        }
+
         protected virtual bool SetField<T>(ref T field, T value, string propertyName)
         {
             if (EqualityComparer<T>.Default.Equals(field, value)) return false;
@@ -39,7 +47,7 @@ namespace CB.Model.Common
             return true;
         }
 
-        protected virtual bool SetProperty<T>(ref T field, T value, [CallerMemberName] string propertyName = null)
+        protected virtual bool SetProperty<T>(ref T field, T value, [CallerMemberName] string propertyName = "")
         {
             return SetField(ref field, value, propertyName);
         }
