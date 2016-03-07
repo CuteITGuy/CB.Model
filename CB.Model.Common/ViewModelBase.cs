@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
-using Microsoft.TeamFoundation.MVVM;
 
 
 namespace CB.Model.Common
